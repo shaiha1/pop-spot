@@ -26,26 +26,39 @@ export default function EditSpace() {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     for (const file of files) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      updateForm('images', [...(form.images || []), file_url]);
+      try {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        updateForm('images', [...(form.images || []), file_url]);
+      } catch (err) {
+        toast({ title: 'העלאת התמונה נכשלה', description: err.message, variant: 'destructive' });
+      }
     }
   };
 
   const handleSave = async () => {
     setSaving(true);
     const minPrice = (form.activity_pricing || []).reduce((min, p) => Math.min(min, p.hourly_price || 0), Infinity);
-    await base44.entities.Space.update(id, {
-      ...form,
-      starting_price: minPrice === Infinity ? 0 : minPrice,
-    });
-    toast({ title: 'השינויים נשמרו' });
-    setSaving(false);
+    try {
+      await base44.entities.Space.update(id, {
+        ...form,
+        starting_price: minPrice === Infinity ? 0 : minPrice,
+      });
+      toast({ title: 'השינויים נשמרו' });
+    } catch (err) {
+      toast({ title: 'השמירה נכשלה', description: err.message, variant: 'destructive' });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = async () => {
-    await base44.entities.Space.delete(id);
-    toast({ title: 'המקום נמחק' });
-    navigate('/host');
+    try {
+      await base44.entities.Space.delete(id);
+      toast({ title: 'המקום נמחק' });
+      navigate('/host');
+    } catch (err) {
+      toast({ title: 'המחיקה נכשלה', description: err.message, variant: 'destructive' });
+    }
   };
 
   if (loading || !form) return (

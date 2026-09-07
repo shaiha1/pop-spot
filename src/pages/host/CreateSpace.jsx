@@ -81,8 +81,12 @@ export default function CreateSpace() {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     for (const file of files) {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      updateForm('images', [...form.images, file_url]);
+      try {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        updateForm('images', [...form.images, file_url]);
+      } catch (err) {
+        toast({ title: 'העלאת התמונה נכשלה', description: err.message, variant: 'destructive' });
+      }
     }
   };
 
@@ -95,18 +99,23 @@ export default function CreateSpace() {
     const minPrice = form.activity_pricing.reduce((min, p) => Math.min(min, p.hourly_price || 0), Infinity);
     const slug = form.title.replace(/\s+/g, '-').toLowerCase();
 
-    await base44.entities.Space.create({
-      ...form,
-      slug,
-      host_id: user.id,
-      host_name: user.full_name || '',
-      starting_price: minPrice === Infinity ? 0 : minPrice,
-      status: 'active',
-    });
+    try {
+      await base44.entities.Space.create({
+        ...form,
+        slug,
+        host_id: user.id,
+        host_name: user.full_name || '',
+        starting_price: minPrice === Infinity ? 0 : minPrice,
+        status: 'active',
+      });
 
-    toast({ title: 'המקום פורסם בהצלחה!' });
-    navigate('/host');
-    setSaving(false);
+      toast({ title: 'המקום פורסם בהצלחה!' });
+      navigate('/host');
+    } catch (err) {
+      toast({ title: 'הפרסום נכשל', description: err.message, variant: 'destructive' });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const canNext = () => {
