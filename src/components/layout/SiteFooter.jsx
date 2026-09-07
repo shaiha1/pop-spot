@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from '@/components/WhatsAppIcon';
 
 export default function SiteFooter() {
   return (
@@ -59,6 +60,16 @@ export default function SiteFooter() {
              onMouseEnter={e => e.currentTarget.style.color = 'var(--brand-primary)'}
              onMouseLeave={e => e.currentTarget.style.color = 'var(--brand-muted-foreground)'}>
             צור קשר · מייל
+          </a>
+          <a href="https://wa.me/972559733667"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="flex items-center gap-1.5"
+             style={{ color: 'var(--brand-muted-foreground)', minHeight: 44 }}
+             onMouseEnter={e => e.currentTarget.style.color = 'var(--brand-primary)'}
+             onMouseLeave={e => e.currentTarget.style.color = 'var(--brand-muted-foreground)'}>
+            <WhatsAppIcon className="w-4 h-4" />
+            צור קשר · ווטסאפ
           </a>
         </nav>
       </footer>

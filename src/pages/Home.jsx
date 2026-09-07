@@ -127,7 +127,7 @@ export default function Home() {
             <div className="flex items-end justify-between mb-6">
               <div>
                 <span className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: 'var(--brand-primary)' }}>קטגוריה</span>
-                <h2 className="font-heading font-bold text-3xl">🏋️ סטודיואים לאימון באזור שלכם</h2>
+                <h2 className="font-heading font-bold text-3xl">🏋️ סטודיוים לאימון באזור שלכם</h2>
               </div>
               <Link to="/search?category=training_studio" className="if-btn-secondary text-sm flex items-center gap-1">
                 הכל <ChevronLeft size={14} />
