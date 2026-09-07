@@ -77,7 +77,7 @@ export default function SearchPage() {
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="חיפוש חללים..."
+            placeholder="חיפוש מקומות..."
             className="if-field-input pr-10"
           />
         </div>

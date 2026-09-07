@@ -57,7 +57,7 @@ export default function Bookings() {
             <CalendarDays size={28} />
           </div>
           <h3 className="font-bold text-2xl mb-2">אין הזמנות עדיין</h3>
-          <p style={{ color: 'var(--brand-muted-foreground)' }}>חפשו חלל והזמינו את החוויה הראשונה</p>
+          <p style={{ color: 'var(--brand-muted-foreground)' }}>חפשו מקום והזמינו את החוויה הראשונה</p>
         </section>
       ) : (
         <div className="space-y-3">

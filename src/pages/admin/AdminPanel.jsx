@@ -36,7 +36,7 @@ export default function AdminPanel() {
   };
 
   const tabs = [
-    { id: 'spaces', label: `חללים (${spaces.length})` },
+    { id: 'spaces', label: `מקומות (${spaces.length})` },
     { id: 'bookings', label: `הזמנות (${bookings.length})` },
     { id: 'users', label: `משתמשים (${users.length})` },
   ];
@@ -122,7 +122,7 @@ export default function AdminPanel() {
           <table className="w-full min-w-[600px]" style={{ background: 'var(--brand-surface)', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>חלל</th>
+                <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>מקום</th>
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>אורח</th>
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>תאריך</th>
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>סה"כ</th>

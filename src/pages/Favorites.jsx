@@ -28,7 +28,7 @@ export default function Favorites() {
            style={{ borderBottom: '2px solid var(--brand-text)' }}>
         <div>
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--brand-primary)' }}>מועדפים</span>
-          <h1 className="font-bold text-3xl mt-1">החללים ששמרתם</h1>
+          <h1 className="font-bold text-3xl mt-1">המקומות ששמרתם</h1>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ export default function Favorites() {
             <Heart size={28} />
           </div>
           <h3 className="font-bold text-2xl mb-2">עדיין אין מועדפים</h3>
-          <p style={{ color: 'var(--brand-muted-foreground)' }}>לחצו על הלב כדי לשמור חללים שאהבתם</p>
+          <p style={{ color: 'var(--brand-muted-foreground)' }}>לחצו על הלב כדי לשמור מקומות שאהבתם</p>
         </section>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

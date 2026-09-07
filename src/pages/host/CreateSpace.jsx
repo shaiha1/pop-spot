@@ -104,7 +104,7 @@ export default function CreateSpace() {
       status: 'active',
     });
 
-    toast({ title: 'החלל פורסם בהצלחה!' });
+    toast({ title: 'המקום פורסם בהצלחה!' });
     navigate('/host');
     setSaving(false);
   };
@@ -436,7 +436,7 @@ export default function CreateSpace() {
         ) : (
           <button onClick={handlePublish} disabled={saving}
                   className="if-btn-primary">
-            <span>{saving ? 'מפרסם...' : 'פרסום החלל'}</span>
+            <span>{saving ? 'מפרסם...' : 'פרסום המקום'}</span>
           </button>
         )}
       </div>

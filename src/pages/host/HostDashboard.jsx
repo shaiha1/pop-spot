@@ -46,18 +46,18 @@ export default function HostDashboard() {
         <div>
           <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--brand-primary)' }}>מארחים</span>
           <h1 className="font-heading font-bold text-4xl mt-1" style={{ color: 'var(--brand-text)', letterSpacing: '-0.02em' }}>לוח הבקרה</h1>
-          <p className="mt-1" style={{ color: 'var(--brand-muted-foreground)' }}>{spaces.length} חללים · {bookings.length} הזמנות</p>
+          <p className="mt-1" style={{ color: 'var(--brand-muted-foreground)' }}>{spaces.length} מקומות · {bookings.length} הזמנות</p>
         </div>
         <Link to="/host/spaces/new" className="if-btn-primary flex items-center gap-2">
           <Plus size={18} className="relative z-10" />
-          <span>חלל חדש</span>
+          <span>מקום חדש</span>
         </Link>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="p-5" style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-surface)', border: '1px solid var(--brand-border)', boxShadow: 'var(--brand-shadow-sm)' }}>
-          <span className="font-semibold text-sm" style={{ color: 'var(--brand-muted-foreground)' }}>חללים פעילים</span>
+          <span className="font-semibold text-sm" style={{ color: 'var(--brand-muted-foreground)' }}>מקומות פעילים</span>
           <strong className="block text-4xl font-bold mt-2 font-heading" style={{ color: 'var(--brand-text)' }}>{spaces.filter(s => s.status === 'active').length}</strong>
         </div>
         <div className="p-5" style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-surface)', border: '1px solid var(--brand-border)', boxShadow: 'var(--brand-shadow-sm)' }}>
@@ -103,16 +103,16 @@ export default function HostDashboard() {
 
       {/* Spaces */}
       <section>
-        <h2 className="font-heading font-bold text-xl mb-3" style={{ color: 'var(--brand-text)' }}>החללים שלי</h2>
+        <h2 className="font-heading font-bold text-xl mb-3" style={{ color: 'var(--brand-text)' }}>המקומות שלי</h2>
         {spaces.length === 0 ? (
           <div className="text-center py-10 px-4" style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-muted)' }}>
             <div className="w-16 h-16 mx-auto mb-4 grid place-items-center rounded-full" style={{ background: 'var(--brand-accent)' }}>
               <Home size={28} style={{ color: 'var(--brand-primary)' }} />
             </div>
-            <h3 className="font-bold text-xl mb-2">עדיין אין חללים</h3>
-            <p className="mb-4" style={{ color: 'var(--brand-muted-foreground)' }}>צרו את החלל הראשון שלכם ותתחילו להרוויח</p>
+            <h3 className="font-bold text-xl mb-2">עדיין אין מקומות</h3>
+            <p className="mb-4" style={{ color: 'var(--brand-muted-foreground)' }}>צרו את המקום הראשון שלכם ותתחילו להרוויח</p>
             <Link to="/host/spaces/new" className="if-btn-primary inline-flex">
-              <span>צור חלל חדש</span>
+              <span>צור מקום חדש</span>
             </Link>
           </div>
         ) : (

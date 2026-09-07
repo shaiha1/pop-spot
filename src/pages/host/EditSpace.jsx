@@ -44,7 +44,7 @@ export default function EditSpace() {
 
   const handleDelete = async () => {
     await base44.entities.Space.delete(id);
-    toast({ title: 'החלל נמחק' });
+    toast({ title: 'המקום נמחק' });
     navigate('/host');
   };
 

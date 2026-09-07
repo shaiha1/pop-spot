@@ -46,7 +46,7 @@ export default function SiteFooter() {
                 fontFamily: 'var(--brand-font-body)',
                 fontSize: 14,
               }}>
-        <span>© 2026 POPSPOT · השכרת חללים לפי שעה בישראל</span>
+        <span>© 2026 POPSPOT · השכרת מקומות לפי שעה בישראל</span>
         <nav className="flex gap-5">
           {['פרטיות', 'תנאי שימוש'].map(t => (
             <a key={t} href="#" style={{ color: 'var(--brand-muted-foreground)', minHeight: 44, display: 'flex', alignItems: 'center' }}

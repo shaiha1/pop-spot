@@ -110,7 +110,7 @@ export default function Home() {
                 <h2 className="font-heading font-bold text-3xl">פופולרי עכשיו</h2>
               </div>
               <Link to="/search" className="if-btn-secondary text-sm flex items-center gap-1">
-                כל החללים
+                כל המקומות
                 <ChevronLeft size={14} />
               </Link>
             </div>
@@ -231,8 +231,8 @@ export default function Home() {
           style={{ background: 'var(--brand-accent)' }}>
               <Search size={28} style={{ color: 'var(--brand-primary)' }} />
             </div>
-            <h3 className="font-bold text-2xl mb-2">עדיין אין חללים</h3>
-            <p style={{ color: 'var(--brand-muted-foreground)' }}>חללים חדשים יופיעו כאן בקרוב</p>
+            <h3 className="font-bold text-2xl mb-2">עדיין אין מקומות</h3>
+            <p style={{ color: 'var(--brand-muted-foreground)' }}>מקומות חדשים יופיעו כאן בקרוב</p>
           </section>
         }
       </div>
