@@ -140,7 +140,11 @@ export const base44 = {
     },
 
     async register({ email, password }) {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: window.location.origin + '/login' },
+      });
       if (error) throw authError(error.message, error.status || 400);
       return { sent: true };
     },
