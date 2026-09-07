@@ -66,18 +66,38 @@ worth listing?") not a bare link-drop — groups mute/ban obvious ads fast.
 > כותרת 1: השכרת מקומות לפי שעה | כותרת 2: {עיר} — בריכות, אולמות ועוד
 > תיאור: מצאו והזמינו מקום מושלם לפי שעה. הזמנה מיידית, מחירים שקופים.
 
-## 5. Referral program (mechanics, implement when ready)
+## 5. Referral program (mechanics, revised for off-platform payment)
 
-- ₪25 credit to both sides when a referred guest completes their first
-  paid booking.
-- ₪50 credit to a host who refers another host whose first listing gets
-  its first booking (supply-side growth is the real bottleneck early on).
-- Needs a `referral_code` field + a redemption flow — not built yet; say
-  the word if you want this implemented (it'd need a `credits` or
-  `wallet_balance` column on `profiles`, plus wiring the checkout/payout
-  logic to apply it — currently there's no real payment processing at
-  all, worth flagging: bookings track prices but no actual charge happens
-  anywhere yet).
+PopSpot never touches money — guest and host settle payment directly — so
+an in-app wallet/credit system doesn't fit (there's nothing to credit
+against; no charge ever runs through the app to apply a discount to).
+Two approaches that actually work under that model:
+
+**A. Manual cash reward (recommended — zero engineering)**
+- You (the operator) pay a referrer directly (Bit/PayBox/bank transfer)
+  once you've manually confirmed the referral led to a real booking —
+  e.g. ₪25 for a guest referral, ₪50 for a host referral (supply-side
+  growth is the real bottleneck early on, so weight it toward hosts).
+- Tracking needs only a lightweight addition: a `referred_by` text field
+  on `profiles` (holding the referrer's email or a short code), captured
+  once at signup via a `?ref=` link. No payout logic in the app at all —
+  you look up who-referred-whom in the Supabase Table Editor and pay out
+  manually. Say the word if you want the `?ref=` capture wired up; it's a
+  small change (one column + reading a query param at signup).
+
+**B. Platform-native reward — no money changes hands**
+- Instead of cash, reward a referring host with **featured placement**:
+  their listing (or the new host's first listing) shown at the top of
+  the home page / relevant category for e.g. 2 weeks. This is something
+  the app can actually enforce itself (unlike a cash reward), since
+  PopSpot fully controls what's displayed.
+- Needs a `featured` boolean + `featured_until` date on `spaces`, plus
+  sorting featured listings first on Home/Search. I can implement this
+  if you want to run with it — it's a well-scoped, self-contained change.
+
+Either can run alongside the other — manual cash for real referral
+tracking, featured placement as a low-cost/no-cash lever you control
+entirely from the admin panel.
 
 ## 6. What to track weekly
 
