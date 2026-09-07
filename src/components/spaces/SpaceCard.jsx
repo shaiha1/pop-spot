@@ -35,7 +35,7 @@ export default function SpaceCard({ space, user }) {
   const useCases = (space.activities || []).slice(0, 3);
 
   return (
-    <Link to={`/space/${space.id}`} className="block group" dir="rtl">
+    <Link to={`/space/${space.slug || space.id}`} className="block group" dir="rtl">
       <article className="overflow-hidden border transition-all duration-200 group-hover:shadow-lg"
                style={{ borderColor: 'var(--brand-border)', borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-surface)', boxShadow: 'var(--brand-shadow-sm)' }}>
 

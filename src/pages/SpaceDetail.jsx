@@ -10,7 +10,7 @@ import ReviewsList from '@/components/spaces/ReviewsList';
 import SpaceMap from '@/components/spaces/SpaceMap';
 
 export default function SpaceDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [space, setSpace] = useState(null);
   const [user, setUser] = useState(null);
@@ -20,21 +20,28 @@ export default function SpaceDetail() {
   const [favId, setFavId] = useState(null);
 
   useEffect(() => {
+    // Route param is normally a human-readable slug; fall back to a raw id
+    // lookup for older links (e.g. a booking's stored space_id).
+    async function resolveSpace() {
+      const bySlug = await base44.entities.Space.filter({ slug });
+      if (bySlug.length > 0) return bySlug[0];
+      return base44.entities.Space.get(slug);
+    }
     Promise.all([
-      base44.entities.Space.get(id),
+      resolveSpace(),
       base44.auth.me().catch(() => null),
     ]).then(([s, u]) => {
       setSpace(s);
       setUser(u);
       if (u) {
-        base44.entities.Favorite.filter({ user_id: u.id, space_id: id })
+        base44.entities.Favorite.filter({ user_id: u.id, space_id: s.id })
           .then(favs => {
             if (favs.length > 0) { setIsFav(true); setFavId(favs[0].id); }
           }).catch(() => {});
       }
     }).catch(() => navigate('/'))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [slug]);
 
   const toggleFav = async () => {
     if (!user) { base44.auth.redirectToLogin(window.location.href); return; }
@@ -43,7 +50,7 @@ export default function SpaceDetail() {
       setIsFav(false);
       setFavId(null);
     } else {
-      const fav = await base44.entities.Favorite.create({ user_id: user.id, space_id: id });
+      const fav = await base44.entities.Favorite.create({ user_id: user.id, space_id: space.id });
       setIsFav(true);
       setFavId(fav.id);
     }
@@ -235,7 +242,7 @@ export default function SpaceDetail() {
           </div>
 
           {/* Reviews */}
-          <ReviewsList spaceId={id} />
+          <ReviewsList spaceId={space.id} />
         </div>
 
         {/* Booking Panel - Desktop Sidebar */}
