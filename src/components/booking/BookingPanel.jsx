@@ -64,11 +64,8 @@ export default function BookingPanel({ space, user }) {
       guests_count: guests,
       hourly_price: hourlyPrice,
       subtotal: pricing.subtotal,
-      guest_fee: pricing.guestFee,
-      host_fee: pricing.hostFee,
       total: pricing.total,
-      host_payout: pricing.hostPayout,
-      platform_revenue: pricing.platformRevenue,
+      host_payout: pricing.total,
       status: space.instant_booking ? 'accepted' : 'pending',
       payment_status: 'unpaid',
     });
@@ -150,17 +147,9 @@ export default function BookingPanel({ space, user }) {
 
       {/* Price Summary */}
       {pricing && hours >= minHours && (
-        <div className="mb-4 py-3 space-y-2" style={{ borderTop: '1px solid var(--brand-border)', borderBottom: '1px solid var(--brand-border)' }}>
-          <div className="flex justify-between text-sm">
+        <div className="mb-4 py-3" style={{ borderTop: '1px solid var(--brand-border)', borderBottom: '1px solid var(--brand-border)' }}>
+          <div className="flex justify-between font-bold text-lg">
             <span>{formatPrice(hourlyPrice)} × {hours} שעות</span>
-            <span>{formatPrice(pricing.subtotal)}</span>
-          </div>
-          <div className="flex justify-between text-sm" style={{ color: 'var(--brand-muted-foreground)' }}>
-            <span>עמלת שירות</span>
-            <span>{formatPrice(pricing.guestFee)}</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg pt-2" style={{ borderTop: '1px solid var(--brand-border)' }}>
-            <span>סה"כ</span>
             <span>{formatPrice(pricing.total)}</span>
           </div>
         </div>
@@ -175,7 +164,7 @@ export default function BookingPanel({ space, user }) {
       </button>
 
       <p className="text-xs text-center mt-3" style={{ color: 'var(--brand-muted-foreground)' }}>
-        התשלום יתבצע לאחר אישור ההזמנה
+        PopSpot הוא פלטפורמת פרסום בלבד — התשלום מתבצע ישירות מול בעל המקום, תאמו את הפרטים בהודעות לאחר אישור ההזמנה
       </p>
     </div>
   );

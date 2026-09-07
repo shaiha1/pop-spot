@@ -1,22 +1,15 @@
-// Central pricing utility
-const GUEST_FEE_PERCENT = 0.05;
-const HOST_FEE_PERCENT = 0.15;
+// Central pricing utility.
+//
+// PopSpot is a listing platform only — payment happens directly between
+// guest and host, arranged via the in-app messaging feature. There is no
+// platform commission, so the "total" here is just the host's own price;
+// it exists purely as a shared estimate both sides see before booking.
 
 export function calculateBookingPrice(hourlyPrice, hours) {
   const subtotal = hourlyPrice * hours;
-  const guestFee = Math.round(subtotal * GUEST_FEE_PERCENT);
-  const hostFee = Math.round(subtotal * HOST_FEE_PERCENT);
-  const total = subtotal + guestFee;
-  const hostPayout = subtotal - hostFee;
-  const platformRevenue = guestFee + hostFee;
-
   return {
     subtotal,
-    guestFee,
-    hostFee,
-    total,
-    hostPayout,
-    platformRevenue,
+    total: subtotal,
   };
 }
 

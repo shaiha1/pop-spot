@@ -140,18 +140,13 @@ export default function BookingDetail() {
         </div>
 
         <div className="space-y-2 py-3" style={{ borderTop: '1px solid var(--brand-border)' }}>
-          <div className="flex justify-between text-sm">
-            <span>מחיר מקום</span>
-            <span>{formatPrice(booking.subtotal)}</span>
-          </div>
-          <div className="flex justify-between text-sm" style={{ color: 'var(--brand-muted-foreground)' }}>
-            <span>עמלת שירות</span>
-            <span>{formatPrice(booking.guest_fee)}</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg pt-2" style={{ borderTop: '1px solid var(--brand-border)' }}>
-            <span>סה"כ</span>
+          <div className="flex justify-between font-bold text-lg">
+            <span>{formatPrice(booking.hourly_price)} × {booking.hours} שעות</span>
             <span>{formatPrice(booking.total)}</span>
           </div>
+          <p className="text-xs" style={{ color: 'var(--brand-muted-foreground)' }}>
+            הערכת מחיר בלבד — התשלום מתבצע ישירות מול בעל המקום, תאמו את הפרטים בהודעות למטה
+          </p>
         </div>
 
         {canCancel && (
