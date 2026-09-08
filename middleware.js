@@ -223,9 +223,32 @@ function withHeaders(response, extra) {
   return new Response(response.body, { status: response.status, headers });
 }
 
+// fetch(request) inside middleware does NOT bypass this same middleware --
+// it re-enters the same routing/middleware pipeline. Without a marker,
+// fetching the underlying page to modify its headers/status causes the
+// middleware to run again on the identical request, forever. This header
+// is stripped of meaning to real clients (nothing else sets or reads it)
+// and only exists so the second, self-triggered pass can recognize itself
+// and fall through immediately instead of repeating the same logic.
+const PASSTHROUGH_HEADER = 'x-mw-passthrough';
+
+async function fetchOrigin(request) {
+  const headers = new Headers(request.headers);
+  headers.set(PASSTHROUGH_HEADER, '1');
+  return fetch(new Request(request.url, { headers, method: request.method }));
+}
+
 export default async function middleware(request) {
+  if (request.headers.get(PASSTHROUGH_HEADER)) return;
+
   const url = new URL(request.url);
   const path = url.pathname;
+
+  // Static public files (robots.txt, vite.svg, favicon, etc.) pass through
+  // completely untouched -- sitemap.xml is the one file-like path that
+  // gets dynamic handling, below.
+  if (path !== '/sitemap.xml' && /\.[a-zA-Z0-9]+$/.test(path)) return;
+
   const ua = request.headers.get('user-agent') || '';
   const isBot = BOT_UA.test(ua);
 
@@ -259,7 +282,7 @@ export default async function middleware(request) {
   // client-side meta tag a non-JS crawler would never see.
   const isPrivate = PRIVATE_PATH_PREFIXES.some((p) => path === p || path.startsWith(p + '/'));
   if (isPrivate) {
-    const res = await fetch(request);
+    const res = await fetchOrigin(request);
     return withHeaders(res, { 'X-Robots-Tag': 'noindex, nofollow' });
   }
 
@@ -269,7 +292,7 @@ export default async function middleware(request) {
   const isKnownStatic = KNOWN_STATIC_ROUTES.has(path);
   const isKnownDynamic = KNOWN_DYNAMIC_ROUTE.test(path);
   if (!isKnownStatic && !isKnownDynamic) {
-    const res = await fetch(request);
+    const res = await fetchOrigin(request);
     const headers = new Headers(res.headers);
     headers.set('X-Robots-Tag', 'noindex, nofollow');
     return new Response(res.body, { status: 404, headers });
