@@ -158,6 +158,42 @@ every route**, not just widening the bot regex.
 21. `priority`/`changefreq` in the sitemap — correctly *omitted* today
     (Google ignores both), no action needed, noted for completeness.
 
+## Business-priority finding: most searches dead-end today (not just a crawler problem)
+
+A competitive SERP review for two representative queries ("בריכה פרטית
+להשכרה בתל אביב", "מקום לאירוע בהרצליה") confirms PopSpot's
+category+city filter architecture is the *right* page type — 75-83% of
+real competing results are the same kind of filterable directory page.
+The problem isn't the design, it's that **real human visitors, not just
+crawlers, hit a dead end today**: with only 8 listings spread across 8
+different cities, almost any specific category+city combination other
+than the exact seeded pairs returns "0 תוצאות" with no recovery path —
+tested directly, both the pool+Tel Aviv and event+Herzliya combos return
+zero results, even though a comparable event venue exists 15 minutes away
+in Givatayim. The empty state never suggests it.
+
+Compounding this: there are **no reviews, ratings, or verified-host
+badges anywhere** on the one populated listing checked in depth — which
+matters more than usual here, since the page itself discloses "PopSpot
+is a listing platform only — payment happens directly with the host,"
+raising the trust bar right at the moment a first-time user is deciding
+whether to hand a stranger money off-platform.
+
+**Additional action items (High priority, business-facing rather than
+purely technical):**
+22. When a `/search` filter returns 0 results, show 2-3 nearby
+    alternatives (same region, relaxed city or category) instead of a
+    dead-end message — every competitor directory reviewed does this.
+23. Add a lightweight trust signal before a real review system exists —
+    e.g. a "מארח מאומת" (verified host) badge for hosts who've completed
+    profile verification, or seed a few real testimonials once actual
+    bookings complete.
+24. This is also a supply problem, not just a product one — more
+    listings per city directly reduces how often the 0-result state is
+    even hit. Ties directly into `MARKETING.md`'s point that host
+    acquisition (supply), not guest acquisition, is the real bottleneck
+    for a new two-sided marketplace.
+
 ## What's already solid — no action needed
 
 - `sitemap.xml` itself is well-formed, correctly declared in `robots.txt`,
@@ -200,18 +236,13 @@ read directly via `/seo google pagespeed <url>` for authoritative numbers.
   third-party scripts competing for the main thread; the Google Maps
   embed on listing pages already lazy-loads correctly.
 
-## What didn't finish this session
+## Session note
 
-The search-experience (SXO) and mobile-viewport visual checks ran into
-tooling turn limits and didn't produce a finished report despite multiple
-attempts — mostly spent on Playwright/browser setup rather than analysis.
-Given how strongly the other 8 completed reports already converge on the
-same root cause (no SSR outside `/space/:slug`), I didn't keep re-running
-these — they'd very likely just re-confirm the same finding from a
-different angle (an SXO/visual check on `/search` would find the same
-"empty shell for crawlers" issue #1 already covers). Worth a targeted
-re-run once the Critical items land, to verify the fix rather than
-re-diagnose the same gap.
+All 10 specialist passes (plus retries for several that hit tooling turn
+limits along the way) completed. Mobile/RTL layout passed cleanly with
+only minor cosmetic notes (a slightly narrow bottom-nav tab, a possibly
+under-sized location-pin tap target, and hero-badge punctuation wrapping
+oddly on narrow screens — none blocking).
 
 ---
 
