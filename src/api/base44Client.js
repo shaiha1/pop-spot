@@ -97,6 +97,11 @@ const userEntity = {
     if (!data) throw authError('User not found', 404);
     return data;
   },
+  async update(id, data) {
+    const { data: row, error } = await supabase.from('profiles').update(data).eq('id', id).select().single();
+    if (error) throw error;
+    return row;
+  },
 };
 
 async function fetchProfile(userId) {

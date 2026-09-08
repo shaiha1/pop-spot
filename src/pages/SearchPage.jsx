@@ -18,6 +18,8 @@ export default function SearchPage() {
   const [query, setQuery] = useState(params.get('q') || '');
   const [maxPrice, setMaxPrice] = useState('');
   const [minGuests, setMinGuests] = useState('');
+  const [fallbackSpaces, setFallbackSpaces] = useState([]);
+  const [fallbackLabel, setFallbackLabel] = useState('');
 
   const landingCopy = getSearchLandingCopy({ category, city });
   useDocumentMeta({ title: landingCopy.title, description: landingCopy.intro });
@@ -55,6 +57,33 @@ export default function SearchPage() {
 
     setSpaces(filtered);
     setLoading(false);
+
+    setFallbackSpaces([]);
+    setFallbackLabel('');
+    if (filtered.length === 0 && (city || category)) {
+      await loadFallback();
+    }
+  };
+
+  // No exact matches for the active city/category filter: relax one
+  // dimension at a time and show a few nearby/similar alternatives instead
+  // of a dead end.
+  const loadFallback = async () => {
+    if (category) {
+      const byCategory = await base44.entities.Space.filter({ status: 'active', category }, '-created_date', 6).catch(() => []);
+      if (byCategory.length > 0) {
+        setFallbackSpaces(byCategory);
+        setFallbackLabel(`${CATEGORIES[category]?.label || category} בערים אחרות`);
+        return;
+      }
+    }
+    if (city) {
+      const byCity = await base44.entities.Space.filter({ status: 'active', city }, '-created_date', 6).catch(() => []);
+      if (byCity.length > 0) {
+        setFallbackSpaces(byCity);
+        setFallbackLabel(`מקומות נוספים ב${city}`);
+      }
+    }
   };
 
   const handleSubmit = (e) => {
@@ -198,11 +227,21 @@ export default function SearchPage() {
                style={{ borderColor: 'var(--brand-muted)', borderTopColor: 'var(--brand-primary)' }} />
         </div>
       ) : spaces.length === 0 ? (
-        <section className="text-center py-12 px-4"
-                 style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-muted)' }}>
-          <h3 className="font-bold text-2xl mb-2">לא נמצאו תוצאות</h3>
-          <p style={{ color: 'var(--brand-muted-foreground)' }}>נסו לשנות את הסינון או לחפש מונח אחר</p>
-        </section>
+        <>
+          <section className="text-center py-12 px-4 mb-8"
+                   style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-muted)' }}>
+            <h3 className="font-bold text-2xl mb-2">לא נמצאו תוצאות מדויקות</h3>
+            <p style={{ color: 'var(--brand-muted-foreground)' }}>נסו לשנות את הסינון או לחפש מונח אחר</p>
+          </section>
+          {fallbackSpaces.length > 0 && (
+            <section>
+              <h3 className="font-heading font-bold text-xl mb-4">{fallbackLabel}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {fallbackSpaces.map(s => <SpaceCard key={s.id} space={s} user={user} />)}
+              </div>
+            </section>
+          )}
+        </>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {spaces.map(s => <SpaceCard key={s.id} space={s} user={user} />)}

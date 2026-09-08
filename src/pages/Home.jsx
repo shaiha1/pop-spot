@@ -35,6 +35,18 @@ export default function Home() {
 
   const categoriesToShow = [...PRIMARY_CATEGORIES, ...SECONDARY_CATEGORIES];
 
+  // Real, crawlable links (not gated behind a bot-only snapshot) into the
+  // city x category combinations that actually have listings today.
+  const popularCombos = [];
+  const seenCombos = new Set();
+  for (const s of spaces) {
+    if (!s.category || !s.city) continue;
+    const key = `${s.category}|${s.city}`;
+    if (seenCombos.has(key)) continue;
+    seenCombos.add(key);
+    popularCombos.push({ category: s.category, city: s.city });
+  }
+
   const poolSpaces = spaces.filter((s) => s.category === 'pool');
   const studioSpaces = spaces.filter((s) => s.category === 'training_studio');
   const villaSpaces = spaces.filter((s) => s.category === 'villa');
@@ -105,6 +117,26 @@ export default function Home() {
             </div>
         </div>
       </section>
+
+      {/* Popular searches — real links into city x category combinations */}
+      {popularCombos.length > 0 && (
+        <section style={{ background: 'var(--brand-surface)', borderTop: '1px solid var(--brand-border)' }}>
+          <div className="max-w-5xl mx-auto px-4 py-6">
+            <h2 className="font-heading font-bold text-lg mb-3">חיפושים פופולריים</h2>
+            <nav className="flex flex-wrap gap-2">
+              {popularCombos.map(({ category, city }) => (
+                <Link
+                  key={`${category}|${city}`}
+                  to={`/search?category=${encodeURIComponent(category)}&city=${encodeURIComponent(city)}`}
+                  className="text-sm font-semibold px-3 py-1.5 rounded-full"
+                  style={{ background: 'var(--brand-muted)', color: 'var(--brand-text)' }}>
+                  {CATEGORIES[category]?.label || category} ב{city}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </section>
+      )}
 
       {/* Spaces Sections */}
       <div className="max-w-5xl mx-auto px-4 mt-10 space-y-14 mb-14">

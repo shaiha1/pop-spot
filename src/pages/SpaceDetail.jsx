@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Star, Users, Heart, Zap, MapPin, ChevronLeft, ChevronRight, Clock, Shield } from 'lucide-react';
+import { Star, Users, Heart, Zap, MapPin, ChevronLeft, ChevronRight, Clock, Shield, BadgeCheck } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { ACTIVITIES, AMENITIES, CANCELLATION_POLICIES, DAYS_HE, CATEGORIES, PRICING_UNITS } from '@/lib/constants';
 import { formatPrice } from '@/lib/pricing';
@@ -19,6 +19,7 @@ export default function SpaceDetail() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isFav, setIsFav] = useState(false);
   const [favId, setFavId] = useState(null);
+  const [hostVerified, setHostVerified] = useState(false);
 
   useDocumentMeta(space ? {
     title: `${space.title} להשכרה לפי שעה ב${space.city} | PopSpot`,
@@ -40,6 +41,11 @@ export default function SpaceDetail() {
     ]).then(([s, u]) => {
       setSpace(s);
       setUser(u);
+      if (s.host_id) {
+        base44.entities.User.get(s.host_id)
+          .then(host => setHostVerified(!!host?.is_verified_host))
+          .catch(() => {});
+      }
       if (u) {
         base44.entities.Favorite.filter({ user_id: u.id, space_id: s.id })
           .then(favs => {
@@ -137,6 +143,16 @@ export default function SpaceDetail() {
                 </span>
               )}
             </div>
+            {space.host_name && (
+              <p className="flex items-center gap-1.5 text-sm mt-3" style={{ color: 'var(--brand-muted-foreground)' }}>
+                מארח: {space.host_name}
+                {hostVerified && (
+                  <span className="flex items-center gap-1 font-semibold" style={{ color: 'var(--brand-success)' }}>
+                    <BadgeCheck size={16} /> מארח מאומת
+                  </span>
+                )}
+              </p>
+            )}
           </div>
 
           {/* Description */}

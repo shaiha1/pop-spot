@@ -37,6 +37,11 @@ export default function AdminPanel() {
     setSpaces(prev => prev.map(s => s.id === id ? { ...s, status } : s));
   };
 
+  const toggleHostVerified = async (id, current) => {
+    await base44.entities.User.update(id, { is_verified_host: !current });
+    setUsers(prev => prev.map(u => u.id === id ? { ...u, is_verified_host: !current } : u));
+  };
+
   const tabs = [
     { id: 'spaces', label: `מקומות (${spaces.length})` },
     { id: 'bookings', label: `הזמנות (${bookings.length})` },
@@ -159,6 +164,7 @@ export default function AdminPanel() {
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>שם</th>
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>אימייל</th>
                 <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>תפקיד</th>
+                <th className="text-right p-3 font-bold" style={{ background: 'var(--brand-muted)', borderBottom: '1px solid var(--brand-border)' }}>מארח מאומת</th>
               </tr>
             </thead>
             <tbody>
@@ -168,6 +174,17 @@ export default function AdminPanel() {
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>{u.email}</td>
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>
                     <span className="if-badge-neutral">{u.role || 'user'}</span>
+                  </td>
+                  <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>
+                    <button onClick={() => toggleHostVerified(u.id, u.is_verified_host)}
+                            className="text-xs font-semibold px-2 py-1"
+                            style={{
+                              background: u.is_verified_host ? 'var(--brand-success)' : 'var(--brand-muted)',
+                              color: u.is_verified_host ? 'white' : 'var(--brand-text)',
+                              borderRadius: 'var(--brand-radius-sm)',
+                            }}>
+                      {u.is_verified_host ? '✓ מאומת' : 'סמן כמאומת'}
+                    </button>
                   </td>
                 </tr>
               ))}

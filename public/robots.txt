@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /favorites
+Disallow: /bookings
+Disallow: /profile
+Disallow: /host
+Disallow: /admin
 
 Sitemap: https://pop-spot.vercel.app/sitemap.xml
