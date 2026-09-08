@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Plus, Home } from 'lucide-react';
 import { formatPrice } from '@/lib/pricing';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import DashboardCharts from '@/components/host/DashboardCharts';
 
 export default function HostDashboard() {
+  useDocumentMeta({ noindex: true });
   const [user, setUser] = useState(null);
   const [spaces, setSpaces] = useState([]);
   const [bookings, setBookings] = useState([]);

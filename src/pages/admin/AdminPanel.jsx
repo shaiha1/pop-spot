@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { formatPrice } from '@/lib/pricing';
 import { BOOKING_STATUSES } from '@/lib/constants';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function AdminPanel() {
+  useDocumentMeta({ noindex: true });
   const [user, setUser] = useState(null);
   const [tab, setTab] = useState('spaces');
   const [spaces, setSpaces] = useState([]);

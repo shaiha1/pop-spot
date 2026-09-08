@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { Search, ChevronLeft } from 'lucide-react';
 import { CATEGORIES, PRIMARY_CATEGORIES, SECONDARY_CATEGORIES, CITIES } from '@/lib/constants';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import SpaceCard from '@/components/spaces/SpaceCard';
 
 export default function Home() {
@@ -11,6 +12,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [searchCity, setSearchCity] = useState('');
   const navigate = useNavigate();
+
+  useDocumentMeta({
+    title: 'POPSPOT | השכרת מקומות לפי שעה',
+    description: 'מצאו והזמינו מקומות פרטיים לפי שעה - בריכות, אירועים, סטודיו לצילום ועוד. Airbnb לפי שעות.',
+  });
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});

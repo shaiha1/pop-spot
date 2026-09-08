@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Upload, X } from 'lucide-react';
 import { ACTIVITIES, CATEGORIES, AMENITIES, CITIES, PRICING_UNITS, DEFAULT_AVAILABILITY, CANCELLATION_POLICIES, DAYS_HE } from '@/lib/constants';
 import { useToast } from '@/components/ui/use-toast';
 import { Image } from '@/components/ui/image';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 const STEPS = [
   { id: 'category', title: 'קטגוריה', subtitle: 'מה תרצו להשכיר?' },
@@ -20,6 +21,7 @@ const STEPS = [
 ];
 
 export default function CreateSpace() {
+  useDocumentMeta({ noindex: true });
   const navigate = useNavigate();
   const { toast } = useToast();
   const [user, setUser] = useState(null);

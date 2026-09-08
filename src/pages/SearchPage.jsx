@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { CATEGORIES, CITIES } from '@/lib/constants';
+import { getSearchLandingCopy } from '@/lib/seoContent';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import SpaceCard from '@/components/spaces/SpaceCard';
 
 export default function SearchPage() {
@@ -16,6 +18,9 @@ export default function SearchPage() {
   const [query, setQuery] = useState(params.get('q') || '');
   const [maxPrice, setMaxPrice] = useState('');
   const [minGuests, setMinGuests] = useState('');
+
+  const landingCopy = getSearchLandingCopy({ category, city });
+  useDocumentMeta({ title: landingCopy.title, description: landingCopy.intro });
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -69,6 +74,14 @@ export default function SearchPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
+      {/* SEO landing copy — varies with the active city/category filters */}
+      {(city || category) && (
+        <div className="mb-6">
+          <h1 className="font-heading font-bold text-2xl mb-1">{landingCopy.title.replace(' | PopSpot', '')}</h1>
+          <p style={{ color: 'var(--brand-muted-foreground)' }}>{landingCopy.intro}</p>
+        </div>
+      )}
+
       {/* Search Bar */}
       <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
         <div className="flex-1 relative">

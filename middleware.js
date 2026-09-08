@@ -101,7 +101,7 @@ ${space.review_count > 0 ? `<p>דירוג: ${escapeHtml(space.avg_rating)}/5 (${
 
 async function renderSitemap(origin) {
   const spaces = await supabaseSelect('spaces?select=slug,id,created_date&status=eq.active') || [];
-  const staticUrls = ['', '/search', '/favorites', '/bookings'];
+  const staticUrls = ['', '/search', '/faq'];
   const urls = [
     ...staticUrls.map((p) => `<url><loc>${origin}${p}</loc></url>`),
     ...spaces.map((s) =>

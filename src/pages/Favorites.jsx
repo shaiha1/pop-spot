@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Heart } from 'lucide-react';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import SpaceCard from '@/components/spaces/SpaceCard';
 
 export default function Favorites() {
+  useDocumentMeta({ noindex: true });
   const [user, setUser] = useState(null);
   const [spaces, setSpaces] = useState([]);
   const [loading, setLoading] = useState(true);

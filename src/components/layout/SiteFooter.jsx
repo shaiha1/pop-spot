@@ -48,6 +48,11 @@ export default function SiteFooter() {
               }}>
         <span>© 2026 POPSPOT · השכרת מקומות לפי שעה בישראל</span>
         <nav className="flex gap-5">
+          <Link to="/faq" style={{ color: 'var(--brand-muted-foreground)', minHeight: 44, display: 'flex', alignItems: 'center' }}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--brand-primary)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--brand-muted-foreground)'}>
+            שאלות נפוצות
+          </Link>
           {['פרטיות', 'תנאי שימוש'].map(t => (
             <a key={t} href="#" style={{ color: 'var(--brand-muted-foreground)', minHeight: 44, display: 'flex', alignItems: 'center' }}
                onMouseEnter={e => e.currentTarget.style.color = 'var(--brand-primary)'}

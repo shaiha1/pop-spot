@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { User, LayoutDashboard, LogOut, Settings, Shield } from 'lucide-react';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function Profile() {
+  useDocumentMeta({ noindex: true });
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 

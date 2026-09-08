@@ -7,8 +7,10 @@ import { formatPrice } from '@/lib/pricing';
 import { useToast } from '@/components/ui/use-toast';
 import { Star } from 'lucide-react';
 import BookingMessages from '@/components/booking/BookingMessages';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function BookingDetail() {
+  useDocumentMeta({ noindex: true });
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();

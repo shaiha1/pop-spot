@@ -5,6 +5,7 @@ import { Star, Users, Heart, Zap, MapPin, ChevronLeft, ChevronRight, Clock, Shie
 import { Image } from '@/components/ui/image';
 import { ACTIVITIES, AMENITIES, CANCELLATION_POLICIES, DAYS_HE, CATEGORIES, PRICING_UNITS } from '@/lib/constants';
 import { formatPrice } from '@/lib/pricing';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import BookingPanel from '@/components/booking/BookingPanel';
 import ReviewsList from '@/components/spaces/ReviewsList';
 import SpaceMap from '@/components/spaces/SpaceMap';
@@ -18,6 +19,12 @@ export default function SpaceDetail() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isFav, setIsFav] = useState(false);
   const [favId, setFavId] = useState(null);
+
+  useDocumentMeta(space ? {
+    title: `${space.title} להשכרה לפי שעה ב${space.city} | PopSpot`,
+    description: (space.description || '').slice(0, 300),
+    image: space.images?.[0],
+  } : {});
 
   useEffect(() => {
     // Route param is normally a human-readable slug; fall back to a raw id

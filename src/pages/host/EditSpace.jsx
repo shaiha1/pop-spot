@@ -5,8 +5,10 @@ import { useToast } from '@/components/ui/use-toast';
 import { CATEGORIES, CITIES } from '@/lib/constants';
 import { Image } from '@/components/ui/image';
 import { Upload, X, Trash2 } from 'lucide-react';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function EditSpace() {
+  useDocumentMeta({ noindex: true });
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();

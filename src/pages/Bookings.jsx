@@ -5,8 +5,10 @@ import { CalendarDays } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { ACTIVITIES, BOOKING_STATUSES } from '@/lib/constants';
 import { formatPrice } from '@/lib/pricing';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function Bookings() {
+  useDocumentMeta({ noindex: true });
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);

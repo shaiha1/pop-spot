@@ -27,6 +27,7 @@ import HostDashboard from '@/pages/host/HostDashboard';
 import CreateSpace from '@/pages/host/CreateSpace';
 import EditSpace from '@/pages/host/EditSpace';
 import AdminPanel from '@/pages/admin/AdminPanel';
+import FAQ from '@/pages/FAQ';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -49,6 +50,7 @@ const AuthenticatedApp = () => {
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/space/:slug" element={<SpaceDetail />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/bookings" element={<Bookings />} />
