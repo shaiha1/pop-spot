@@ -4,17 +4,17 @@ Full-site audit via `/seo audit`, 10 parallel specialist passes (technical,
 content, schema, sitemap, performance, visual/mobile, GEO/AI-search,
 search-experience, local, backlinks), all live-tested against production.
 
-## SEO Health Score: 37 / 100
+## SEO Health Score: 36 / 100
 
 | Category | Weight | Score |
 |---|---|---|
-| Technical SEO | 22% | 30/100 |
+| Technical SEO | 22% | 42/100 |
 | Content Quality | 23% | 40/100 |
 | On-Page SEO | 20% | 35/100 |
 | Schema / Structured Data | 10% | 40/100 |
-| Performance (CWV) | 10% | 50/100 |
+| Performance (CWV) | 10% | 35/100 |
 | AI Search Readiness (GEO) | 10% | 34/100 |
-| Images | 5% | 45/100 |
+| Images | 5% | 30/100 |
 
 Expected for a site that launched days ago — the score isn't a verdict on
 the work, it's a map of exactly where the leverage is. And the map is
@@ -57,6 +57,20 @@ Verified live (fetched with real Googlebot/GPTBot/etc. User-Agents):
 - `llms.txt` returns HTTP 200 with the SPA shell instead of a real file or
   a clean 404 — a false-positive that could confuse simple AI-tool
   existence checks.
+
+**Important nuance from the technical audit:** the current approach —
+serving different content based on User-Agent — is what Google calls
+"dynamic rendering." Google *used to* recommend this as a workaround for
+JS-heavy sites; it has since moved away from recommending it as a
+long-term solution, in part because it's a single point of failure (any
+crawler whose UA isn't on the allow-list, or any secondary Google fetcher
+that doesn't match "Googlebot" exactly, gets nothing). The content served
+is genuinely equivalent to what a user eventually sees, so this isn't
+deceptive cloaking in the "show searchers something different to trick
+them" sense — but it's also not the durable fix. **The real fix is
+extending real rendering (SSR/SSG, or at minimum the same snapshot
+approach applied universally rather than gated by a UA allow-list) to
+every route**, not just widening the bot regex.
 
 ## Prioritized action plan
 
@@ -107,20 +121,41 @@ Verified live (fetched with real Googlebot/GPTBot/etc. User-Agents):
     schema at the brand level) — helps AI-overview/Knowledge-Panel
     entity recognition.
 13. Self-host or `preload` the Google Fonts (Archivo, Source Sans 3)
-    instead of the current render-blocking `<link>` — a real,
-    unmeasured-but-known Core Web Vitals cost.
-14. Consider whether a marketplace-wide Google Business Profile is worth
+    instead of the current render-blocking `<link>`.
+14. Code-split the JS bundle by route. Confirmed: the entire app ships as
+    one 1.07MB (310KB gzip) bundle, including `recharts` (host-dashboard
+    charting, unused on public pages) and other dashboard-only code on
+    every single page load — home/listing visitors download and parse
+    code they'll never use.
+15. Right-size and lazy-load images. Confirmed: home page's 11 below-fold
+    card images are ~245KB (AVIF) each at 1200px width when they render
+    far smaller in the actual grid — no `srcset`/`sizes`/`loading`
+    attributes on any of the 12 `<img>` tags. Add `loading="lazy"` to
+    below-fold images, request appropriately-sized widths from Unsplash's
+    own params, and add `fetchpriority="high"` to the hero image only.
+16. Add basic security headers (`X-Content-Type-Options: nosniff`,
+    `Content-Security-Policy`, `Referrer-Policy`) at the Vercel edge
+    config — not SEO-critical but currently entirely absent and cheap to
+    add while touching this layer anyway.
+17. Add a `rel="canonical"` tag to `/` and `/search` (currently missing
+    even in the bot snapshot) to guard against duplicate/parameterized
+    variants once more search filters are added.
+18. Consider whether a marketplace-wide Google Business Profile is worth
     pursuing at all — a specialist pass concluded it's a defensible but
     secondary lever (category mismatch risk for non-rental categories,
     can't represent 11 cities under one profile) and that the primary
     local-SEO investment should go into #1/#5 instead.
 
 **Low**
-15. Make the `<lastmod>` values in the sitemap meaningful — all 8 listings
+19. Make the `<lastmod>` values in the sitemap meaningful — all 8 listings
     currently share the exact same millisecond timestamp (reads as a bulk
     seed-data date, not real update tracking); Google may learn to
     distrust the signal domain-wide if this persists.
-16. Add `priority`/`changefreq` — actually correctly *omitted* today
+20. Evaluate IndexNow submission for Bing/Yandex/Naver once real
+    server-rendered content exists for home/search — submitting a URL
+    that resolves to an empty shell for those engines provides no benefit
+    today.
+21. `priority`/`changefreq` in the sitemap — correctly *omitted* today
     (Google ignores both), no action needed, noted for completeness.
 
 ## What's already solid — no action needed
@@ -137,18 +172,46 @@ Verified live (fetched with real Googlebot/GPTBot/etc. User-Agents):
 - A near-zero backlink profile is expected and not itself a finding for a
   days-old site — see `MARKETING.md` for the existing outreach plan.
 
-## What I didn't get a clean automated read on
+## Performance detail (lab evidence, not official Lighthouse/CrUX)
 
-Several specialist passes (performance/CWV numbers, mobile-viewport visual
-check, deep search-experience persona scoring) ran into tooling turn
-limits during this session and didn't produce a finished score. Based on
-direct knowledge of the codebase rather than tool output: images are
-hotlinked from Unsplash with no optimization/lazy-loading, fonts load via
-a render-blocking tag, and there's no code-splitting beyond Vite's
-default — all real, fixable, but not independently *measured* this round.
-Happy to re-run those specifically once the Critical items above land, or
-you can request a Google PageSpeed Insights read directly via `/seo google
-pagespeed <url>` if you'd rather get real field data.
+No official Lighthouse or CrUX field data was obtainable this session
+(PageSpeed Insights hit a shared-quota rate limit with no API key
+configured, and this environment has no npm registry access to run
+Lighthouse directly). The findings above are from direct inspection of
+the actual shipped HTML/JS/images/headers, which is reliable for
+diagnosis even without an official 0-100 score. **Recommended next step:**
+configure a `GOOGLE_API_KEY` and re-run, or request a PageSpeed Insights
+read directly via `/seo google pagespeed <url>` for authoritative numbers.
+
+- Both `/` and `/space/villa-pool-herzliya` ship an identical empty shell
+  (confirmed via `X-Vercel-Cache: HIT`, zero SSR) — CLS itself is likely
+  "Good" (fixed hero height + `aspect-ratio` wrappers already reserve
+  layout space), but LCP is structurally at risk since nothing paints
+  until JS downloads, parses, executes, and fetches data from Supabase.
+- The bundle is a single 1,099,467-byte (310,171 gzip) file for the
+  entire app — recharts and other dashboard-only code ships to every
+  visitor regardless of which page they're on.
+- Home page's images: 1 hero (~410KB AVIF at `w=2000`) + 11 cards (~245KB
+  AVIF each at `w=1200`) — all load eagerly, all requested far larger
+  than their actual rendered size, no `srcset`/`loading`/`fetchpriority`
+  attributes on any of them. Format negotiation (AVIF/WebP via Unsplash's
+  `auto=format`) already works correctly — that part doesn't need fixing.
+- DOM size (~500 elements/page) is well within a healthy range; no
+  third-party scripts competing for the main thread; the Google Maps
+  embed on listing pages already lazy-loads correctly.
+
+## What didn't finish this session
+
+The search-experience (SXO) and mobile-viewport visual checks ran into
+tooling turn limits and didn't produce a finished report despite multiple
+attempts — mostly spent on Playwright/browser setup rather than analysis.
+Given how strongly the other 8 completed reports already converge on the
+same root cause (no SSR outside `/space/:slug`), I didn't keep re-running
+these — they'd very likely just re-confirm the same finding from a
+different angle (an SXO/visual check on `/search` would find the same
+"empty shell for crawlers" issue #1 already covers). Worth a targeted
+re-run once the Critical items land, to verify the fix rather than
+re-diagnose the same gap.
 
 ---
 
