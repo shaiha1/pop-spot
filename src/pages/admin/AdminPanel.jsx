@@ -42,6 +42,16 @@ export default function AdminPanel() {
     setUsers(prev => prev.map(u => u.id === id ? { ...u, is_verified_host: !current } : u));
   };
 
+  const toggleRole = async (id, currentRole) => {
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    if (id === user.id && newRole !== 'admin') {
+      const confirmed = window.confirm('אתם עומדים להסיר מעצמכם הרשאות ניהול. להמשיך?');
+      if (!confirmed) return;
+    }
+    await base44.entities.User.update(id, { role: newRole });
+    setUsers(prev => prev.map(u => u.id === id ? { ...u, role: newRole } : u));
+  };
+
   const tabs = [
     { id: 'spaces', label: `מקומות (${spaces.length})` },
     { id: 'bookings', label: `הזמנות (${bookings.length})` },
@@ -173,7 +183,15 @@ export default function AdminPanel() {
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>{u.full_name || '—'}</td>
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>{u.email}</td>
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>
-                    <span className="if-badge-neutral">{u.role || 'user'}</span>
+                    <button onClick={() => toggleRole(u.id, u.role)}
+                            className="text-xs font-semibold px-2 py-1"
+                            style={{
+                              background: u.role === 'admin' ? 'var(--brand-secondary)' : 'var(--brand-muted)',
+                              color: u.role === 'admin' ? 'white' : 'var(--brand-text)',
+                              borderRadius: 'var(--brand-radius-sm)',
+                            }}>
+                      {u.role === 'admin' ? '👑 admin' : 'user'}
+                    </button>
                   </td>
                   <td className="p-3" style={{ borderBottom: '1px solid var(--brand-border)' }}>
                     <button onClick={() => toggleHostVerified(u.id, u.is_verified_host)}
