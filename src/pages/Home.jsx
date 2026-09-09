@@ -63,7 +63,7 @@ export default function Home() {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(16,37,28,0.35) 0%, rgba(16,37,28,0.6) 100%)' }} />
 
         <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 text-center flex flex-col items-center">
-          <span className="mb-4 px-4 py-1.5 font-bold uppercase tracking-widest rounded-full text-4xl"
+          <span className="mb-4 px-4 py-1.5 font-bold uppercase tracking-widest rounded-full text-xs sm:text-sm whitespace-nowrap"
           style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', border: '1px solid rgba(255,255,255,0.3)' }}>
             PopSpot · המקום שלך. בזמן שלך.
           </span>
