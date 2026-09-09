@@ -217,10 +217,18 @@ async function renderSitemap(origin) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`;
 }
 
-function withHeaders(response, extra) {
+function withHeaders(response, extra, status) {
   const headers = new Headers(response.headers);
+  // fetch() already transparently decompresses the body, but the
+  // content-encoding/content-length headers on the Response object still
+  // describe the original compressed payload. Copying them verbatim onto a
+  // new Response wrapping the (already decompressed) body causes browsers
+  // -- which always request gzip/br, unlike a plain curl call -- to try to
+  // decompress already-decompressed content and render a blank page.
+  headers.delete('content-encoding');
+  headers.delete('content-length');
   for (const [k, v] of Object.entries(extra)) headers.set(k, v);
-  return new Response(response.body, { status: response.status, headers });
+  return new Response(response.body, { status: status ?? response.status, headers });
 }
 
 // fetch(request) inside middleware does NOT bypass this same middleware --
@@ -293,9 +301,7 @@ export default async function middleware(request) {
   const isKnownDynamic = KNOWN_DYNAMIC_ROUTE.test(path);
   if (!isKnownStatic && !isKnownDynamic) {
     const res = await fetchOrigin(request);
-    const headers = new Headers(res.headers);
-    headers.set('X-Robots-Tag', 'noindex, nofollow');
-    return new Response(res.body, { status: 404, headers });
+    return withHeaders(res, { 'X-Robots-Tag': 'noindex, nofollow' }, 404);
   }
 
   // Everything else (known public routes for non-bot requests): unchanged.
