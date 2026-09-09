@@ -76,8 +76,8 @@ export default function Home() {
           </p>
 
           {/* Floating search bar */}
-          <div className="w-full max-w-2xl flex flex-col sm:flex-row items-stretch gap-2 p-2"
-          style={{ background: '#fff', borderRadius: '999px', boxShadow: '0 20px 50px rgba(0,0,0,0.25)' }}>
+          <div className="w-full max-w-2xl flex flex-col sm:flex-row items-stretch gap-2 p-2 rounded-3xl sm:rounded-full"
+          style={{ background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.25)' }}>
             <select
               value={searchCity}
               onChange={(e) => setSearchCity(e.target.value)}
