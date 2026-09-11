@@ -120,6 +120,7 @@ export default function SpaceRequests() {
         <div className="space-y-3">
           {filtered.map(req => {
             const cat = CATEGORIES[req.category];
+            const catLabel = cat ? `${cat.emoji} ${cat.label}` : req.other_category || null;
             return (
               <Link key={req.id} to={`/requests/${req.id}`} className="block group">
                 <article className="p-5 border transition-all group-hover:shadow-md"
@@ -131,10 +132,10 @@ export default function SpaceRequests() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
                       {/* Category badge */}
-                      {cat && (
+                      {catLabel && (
                         <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full mb-2"
                               style={{ background: 'var(--brand-accent)', color: 'var(--brand-primary)' }}>
-                          {cat.emoji} {cat.label}
+                          {catLabel}
                         </span>
                       )}
 

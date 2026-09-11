@@ -88,6 +88,10 @@ export const CATEGORIES = {
     label: 'מטבחים', emoji: '🍳', icon: 'ChefHat',
     activities: ['cooking_class', 'food_photography', 'workshop'],
   },
+  rooftop: {
+    label: 'גג / רופטופ', emoji: '🏙️', icon: 'Building2',
+    activities: ['event', 'birthday', 'photography', 'video', 'family_event', 'company_event'],
+  },
   // Future vertical — not shown prominently at launch, kept for architecture readiness
   parking: {
     label: 'חניה', emoji: '🚗', icon: 'Car',
@@ -97,7 +101,7 @@ export const CATEGORIES = {
 };
 
 export const PRIMARY_CATEGORIES = ['training_studio', 'pool', 'villa', 'event_space', 'photography'];
-export const SECONDARY_CATEGORIES = ['meeting', 'podcast', 'sports', 'garden', 'kitchen'];
+export const SECONDARY_CATEGORIES = ['meeting', 'podcast', 'sports', 'garden', 'kitchen', 'rooftop'];
 
 // Legacy aliases kept for compatibility with older code paths
 export const PRIMARY_ACTIVITIES = PRIMARY_CATEGORIES;
