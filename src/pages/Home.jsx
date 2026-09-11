@@ -275,6 +275,28 @@ export default function Home() {
         }
       </div>
 
+      {/* Space Request CTA */}
+      <section className="max-w-5xl mx-auto px-4 mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5 p-7"
+             style={{ borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-accent)', border: '2px solid var(--brand-primary)' }}>
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--brand-primary)' }}>לוח בקשות</span>
+            <h2 className="font-heading font-bold text-2xl mt-1 mb-1">לא מצאתם מה שחיפשתם?</h2>
+            <p className="text-sm" style={{ color: 'var(--brand-muted-foreground)' }}>
+              פרסמו בקשה ובעלי מקומות יפנו אליכם ישירות בתוך האפליקציה
+            </p>
+          </div>
+          <div className="flex gap-3 flex-shrink-0">
+            <Link to="/requests/new" className="if-btn-primary whitespace-nowrap">
+              פרסם בקשה
+            </Link>
+            <Link to="/requests" className="if-btn-secondary whitespace-nowrap">
+              לוח בקשות
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Host CTA */}
       <section className="max-w-5xl mx-auto px-4 mb-14">
         <div className="grid sm:grid-cols-2 gap-6 items-center p-8"

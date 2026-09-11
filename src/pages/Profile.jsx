@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { User, LayoutDashboard, LogOut, Settings, Shield } from 'lucide-react';
+import { User, LayoutDashboard, LogOut, Settings, Shield, ClipboardList } from 'lucide-react';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 
 export default function Profile() {
@@ -32,6 +32,7 @@ export default function Profile() {
     { label: 'לוח בקרה למארחים', path: '/host', icon: LayoutDashboard },
     { label: 'ההזמנות שלי', path: '/bookings', icon: Settings },
     { label: 'המועדפים שלי', path: '/favorites', icon: User },
+    { label: 'הבקשות שלי', path: '/my-requests', icon: ClipboardList },
   ];
 
   if (user.role === 'admin') {

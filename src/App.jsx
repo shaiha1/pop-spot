@@ -28,6 +28,10 @@ import CreateSpace from '@/pages/host/CreateSpace';
 import EditSpace from '@/pages/host/EditSpace';
 import AdminPanel from '@/pages/admin/AdminPanel';
 import FAQ from '@/pages/FAQ';
+import SpaceRequests from '@/pages/SpaceRequests';
+import SpaceRequestNew from '@/pages/SpaceRequestNew';
+import SpaceRequestDetail from '@/pages/SpaceRequestDetail';
+import MyRequests from '@/pages/MyRequests';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -60,6 +64,10 @@ const AuthenticatedApp = () => {
         <Route path="/host/spaces/new" element={<CreateSpace />} />
         <Route path="/host/spaces/:id/edit" element={<EditSpace />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/requests" element={<SpaceRequests />} />
+        <Route path="/requests/new" element={<SpaceRequestNew />} />
+        <Route path="/requests/:id" element={<SpaceRequestDetail />} />
+        <Route path="/my-requests" element={<MyRequests />} />
       </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>

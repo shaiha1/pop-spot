@@ -12,6 +12,7 @@ export default function TopNav() {
 
   const navLinks = [
   { path: '/search', label: 'חיפוש' },
+  { path: '/requests', label: 'לוח בקשות' },
   { path: '/favorites', label: 'מועדפים' },
   { path: '/bookings', label: 'הזמנות' }];
 

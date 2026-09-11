@@ -194,6 +194,8 @@ export const base44 = {
     Favorite: makeEntity('favorites'),
     Review: makeEntity('reviews'),
     Message: makeEntity('messages'),
+    SpaceRequest: makeEntity('space_requests'),
+    SpaceRequestResponse: makeEntity('space_request_responses'),
     User: userEntity,
   },
 
