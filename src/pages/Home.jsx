@@ -73,7 +73,7 @@ export default function Home() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 shadow-sm"
           style={{ background: 'rgba(255,255,255,0.15)', color: 'var(--brand-accent)', backdropFilter: 'blur(6px)' }}>
             <Sparkles size={14} style={{ color: 'var(--brand-gold)' }} />
-            <span>פלטפורמת הפרימיום לחללים לפי שעה בישראל</span>
+            <span>פלטפורמת הפרימיום למקומות לפי שעה בישראל</span>
           </span>
 
           <h1 className="font-heading font-bold leading-tight mb-4"
