@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..800;1,300..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -26,8 +26,8 @@
     --input: 39 13% 75%;
     --ring: 233 70% 48%;
     --radius: 7px;
-    --font-heading: 'Archivo', sans-serif;
-    --font-body: 'Source Sans 3', sans-serif;
+    --font-heading: 'Rubik', sans-serif;
+    --font-body: 'Rubik', sans-serif;
     --font-heading-line-height: 1.08;
     --font-heading-letter-spacing: -0.025em;
     --font-body-line-height: 1.5;
@@ -43,21 +43,27 @@
   }
 
   :root {
-    --brand-primary: #1B7A4D;
+    --brand-primary: #004328;
     --brand-on-primary: #FFFFFF;
-    --brand-secondary: #10251C;
-    --brand-accent: #DDF2E1;
-    --brand-background: #F5F7F1;
+    --brand-secondary: #053B24;
+    --brand-accent: #D9EEDB;
+    --brand-background: #FCF9F8;
     --brand-surface: #FFFFFF;
-    --brand-text: #101314;
-    --brand-muted: #EEF2EA;
-    --brand-muted-foreground: #626A70;
-    --brand-border: #E4E6E5;
-    --brand-destructive: #B42332;
-    --brand-success: #1B7A4D;
-    --brand-warning: #A65B08;
-    --brand-font-heading: 'Archivo', sans-serif;
-    --brand-font-body: 'Source Sans 3', sans-serif;
+    --brand-surface-cream: #F9FAF8;
+    --brand-text: #1C1B1B;
+    --brand-muted: #F0EDEC;
+    --brand-muted-foreground: #404942;
+    --brand-border: #E7EBE4;
+    --brand-destructive: #BA1A1A;
+    --brand-success: #227953;
+    --brand-warning: #5D4201;
+    --brand-emerald-vibrant: #227953;
+    --brand-emerald-deep: #053B24;
+    --brand-gold: #D4AF37;
+    --brand-gold-bg: #FAF5EA;
+    --brand-rating-star: #E5A93C;
+    --brand-font-heading: 'Rubik', sans-serif;
+    --brand-font-body: 'Rubik', sans-serif;
     --brand-font-heading-line-height: 1.08;
     --brand-font-heading-letter-spacing: -0.025em;
     --brand-font-body-line-height: 1.5;
@@ -104,7 +110,7 @@
 
   body {
     @apply text-foreground font-body;
-    background: linear-gradient(180deg, #F7F9F3 0%, #F2F5EE 100%);
+    background: linear-gradient(180deg, #FCF9F8 0%, #F6F3F2 100%);
     background-attachment: fixed;
     min-height: 100vh;
   }
@@ -126,7 +132,7 @@
   transition: transform .12s ease, box-shadow .18s ease, background .18s ease;
 }
 .if-btn-primary span { position: relative; z-index: 1; }
-.if-btn-primary:hover { background: var(--brand-secondary); border-color: var(--brand-secondary); box-shadow: var(--brand-shadow-sm); }
+.if-btn-primary:hover { background: var(--brand-emerald-vibrant); border-color: var(--brand-emerald-vibrant); box-shadow: var(--brand-shadow-sm); }
 .if-btn-primary:active { transform: translateY(1px); box-shadow: var(--brand-shadow-none); }
 .if-btn-primary:focus-visible { outline: 3px solid var(--brand-accent); outline-offset: 3px; }
 .if-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }

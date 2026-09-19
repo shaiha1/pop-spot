@@ -18,51 +18,58 @@ export default function TopNav() {
 
 
   return (
-    <nav className="hidden md:flex items-center w-full min-h-[72px] px-8"
+    <nav className="hidden md:flex items-center w-full min-h-[80px] px-8"
     dir="rtl"
     style={{
-      background: 'linear-gradient(90deg, #EEF2EA 0%, #F4F7EF 50%, #EEF2EA 100%)',
-      borderBottom: '1px solid #DCE4D6',
+      background: 'rgba(252,249,248,0.92)',
+      backdropFilter: 'blur(20px)',
+      boxShadow: '0 1px 8px rgba(0,0,0,0.04)',
       fontFamily: 'var(--brand-font-body)',
       position: 'sticky',
       top: 0,
       zIndex: 50
     }}>
-      <Link to="/" className="font-heading font-bold ms-auto text-5xl"
-      style={{ color: '#1A3329', letterSpacing: '-0.02em' }}>
-        POPSPOT
+      <Link to="/" className="flex items-center gap-2 ms-auto">
+        <span className="font-heading font-bold text-2xl tracking-wider transition-colors"
+        style={{ color: 'var(--brand-primary)' }}>
+          POPSPOT
+        </span>
+        <span className="w-2 h-2 rounded-full inline-block mb-1" style={{ background: 'var(--brand-emerald-vibrant)' }} />
+        <span className="mr-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest"
+        style={{ background: 'var(--brand-gold-bg)', color: 'var(--brand-warning)', border: '1px solid rgba(212,175,55,0.3)' }}>
+          ישראל
+        </span>
       </Link>
 
-      <div className="flex items-center gap-1 ms-auto">
+      <div className="flex items-center gap-1 ms-auto p-1 rounded-full" style={{ background: 'rgba(240,237,236,0.6)' }}>
         {navLinks.map((link) => {
           const isActive = link.path !== '/' && location.pathname.startsWith(link.path);
           return (
             <Link
               key={link.path}
               to={link.path}
-              className="flex items-center min-h-[44px] px-4 font-semibold text-sm transition-all rounded-full"
+              className="flex items-center min-h-[40px] px-4 font-semibold text-sm rounded-full transition-all"
               style={{
-                background: isActive ? 'rgba(27,122,77,0.10)' : 'transparent',
-                color: isActive ? '#1B7A4D' : '#2A3B32',
-                borderBottom: isActive ? '2px solid #1B7A4D' : '2px solid transparent',
-                borderRadius: isActive ? '12px' : '999px'
+                background: isActive ? '#F4F7EF' : 'transparent',
+                color: isActive ? 'var(--brand-primary)' : 'var(--brand-muted-foreground)',
+                boxShadow: isActive ? '0 1px 4px rgba(0,0,0,0.02)' : 'none'
               }}>
               {link.label}
             </Link>);
         })}
-        <Link to="/host" className="flex items-center min-h-[44px] px-4 font-semibold text-sm transition-all rounded-full"
-        style={{ color: '#2A3B32', borderBottom: '2px solid transparent' }}>
-          פרסמו מקום
-        </Link>
       </div>
 
-      <div className="ms-2">
+      <div className="flex items-center gap-2 ms-2">
+        <Link to="/host" className="hidden lg:inline-flex items-center px-4 py-2.5 rounded-full font-semibold text-sm transition-all"
+        style={{ color: 'var(--brand-primary)', background: '#F4F7EF' }}>
+          הפכו למארחים
+        </Link>
         {user ?
         <Link to="/profile"
         className="flex items-center gap-2 px-3 font-semibold text-sm transition-all rounded-full"
-        style={{ minHeight: 44, background: '#1B7A4D', color: '#fff' }}>
+        style={{ minHeight: 44, background: 'var(--brand-primary)', color: '#fff' }}>
             <span className="w-7 h-7 flex items-center justify-center rounded-full font-bold text-xs"
-          style={{ background: '#fff', color: '#1B7A4D' }}>
+          style={{ background: '#fff', color: 'var(--brand-primary)' }}>
               {(user.full_name || user.email || '?')[0].toUpperCase()}
             </span>
             {user.full_name?.split(' ')[0] || 'פרופיל'}

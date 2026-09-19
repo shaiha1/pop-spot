@@ -63,9 +63,9 @@ module.exports = {
   			}
   		},
   		fontFamily: {
-  			heading: ["'Archivo'", 'sans-serif'],
-  			body: ["'Source Sans 3'", 'sans-serif'],
-  			display: ["'Archivo'", 'sans-serif'],
+  			heading: ["'Rubik'", 'sans-serif'],
+  			body: ["'Rubik'", 'sans-serif'],
+  			display: ["'Rubik'", 'sans-serif'],
   			mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace']
   		},
   		keyframes: {

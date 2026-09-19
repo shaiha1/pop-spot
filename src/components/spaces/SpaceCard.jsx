@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Star, Zap, Users } from 'lucide-react';
+import { Heart, Star, Zap, MapPin } from 'lucide-react';
 import { Image } from '@/components/ui/image';
 import { base44 } from '@/api/base44Client';
 import { ACTIVITIES, CATEGORIES } from '@/lib/constants';
@@ -36,86 +36,70 @@ export default function SpaceCard({ space, user }) {
 
   return (
     <Link to={`/space/${space.slug || space.id}`} className="block group" dir="rtl">
-      <article className="overflow-hidden border transition-all duration-200 group-hover:shadow-lg"
-               style={{ borderColor: 'var(--brand-border)', borderRadius: 'var(--brand-radius-lg)', background: 'var(--brand-surface)', boxShadow: 'var(--brand-shadow-sm)' }}>
+      <article className="overflow-hidden transition-all duration-300 flex flex-col"
+               style={{ borderRadius: '1rem', background: 'var(--brand-surface)', boxShadow: 'var(--brand-shadow-sm)' }}>
 
         {/* Image */}
-        <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+        <div className="relative overflow-hidden bg-surface-container" style={{ aspectRatio: '16/10' }}>
           {mainImage ? (
             <Image src={mainImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           ) : (
             <div className="w-full h-full" style={{ background: 'var(--brand-muted)' }} />
           )}
 
-          {/* Top overlay row */}
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-between p-3">
-            {space.instant_booking ? (
-              <span className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold rounded-full"
-                    style={{ background: 'var(--brand-accent)', color: 'var(--brand-primary)' }}>
-                <Zap size={11} fill="currentColor" /> הזמנה מיידית
-              </span>
-            ) : <span />}
-            <button onClick={toggleFav}
-                    className="w-9 h-9 flex items-center justify-center transition-transform active:scale-90 rounded-full"
-                    style={{ background: 'rgba(255,255,255,0.92)', boxShadow: '0 1px 4px rgba(0,0,0,.18)' }}>
-              <Heart size={17} fill={isFav ? 'var(--brand-destructive)' : 'none'}
-                     stroke={isFav ? 'var(--brand-destructive)' : 'var(--brand-text)'} />
-            </button>
-          </div>
+          <button onClick={toggleFav}
+                  className="absolute top-3 right-3 w-9 h-9 flex items-center justify-center transition-transform active:scale-90 rounded-full backdrop-blur-md"
+                  style={{ background: 'rgba(255,255,255,0.85)', boxShadow: '0 1px 4px rgba(0,0,0,.12)' }}>
+            <Heart size={17} fill={isFav ? 'var(--brand-destructive)' : 'none'}
+                   stroke={isFav ? 'var(--brand-destructive)' : 'var(--brand-muted-foreground)'} />
+          </button>
 
-          {/* Bottom price overlay */}
-          {startingPrice > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 p-3 flex items-end justify-between"
-                 style={{ background: 'linear-gradient(to top, rgba(23,32,42,0.65) 0%, transparent 100%)' }}>
-              <span className="font-heading font-bold text-white" style={{ fontSize: 18 }}>
-                ₪{startingPrice}
-                <span className="font-body font-normal text-sm opacity-80"> /שעה</span>
+          {space.instant_booking && (
+            <div className="absolute top-3 left-3">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm"
+                    style={{ background: 'var(--brand-accent)', color: 'var(--brand-emerald-deep)' }}>
+                <Zap size={12} fill="currentColor" /> אישור מיידי
               </span>
-              {space.avg_rating > 0 && (
-                <span className="flex items-center gap-1 text-white text-sm font-semibold">
-                  <Star size={13} fill="var(--brand-accent)" stroke="none" />
-                  {space.avg_rating.toFixed(1)}
-                </span>
-              )}
             </div>
           )}
         </div>
 
         {/* Body */}
-        <div className="text-right" style={{ padding: 'var(--brand-sp-3) var(--brand-sp-4) var(--brand-sp-4)' }}>
-          {/* City + activity badge */}
-          <div className="flex items-center justify-between mb-1">
-            <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--brand-muted-foreground)' }}>
-              {space.city}{space.area ? ` · ${space.area}` : ''}
-            </p>
-            {category && (
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full"
-                    style={{ background: 'var(--brand-muted)', color: 'var(--brand-text)' }}>
-                {category.emoji} {category.label}
+        <div className="flex flex-col flex-1 justify-between p-4">
+          <div>
+            <div className="flex items-center justify-between text-xs mb-1" style={{ color: 'var(--brand-muted-foreground)' }}>
+              <span className="flex items-center gap-1 font-semibold" style={{ color: 'var(--brand-primary)' }}>
+                <MapPin size={14} /> {space.city}{space.area ? ` · ${space.area}` : ''}
               </span>
-            )}
+              {space.avg_rating > 0 && (
+                <span className="flex items-center gap-1 font-medium" style={{ color: 'var(--brand-text)' }}>
+                  <Star size={14} fill="var(--brand-rating-star)" stroke="none" />
+                  {space.avg_rating.toFixed(2)}
+                  {space.review_count > 0 && <span style={{ color: 'var(--brand-muted-foreground)' }}>({space.review_count})</span>}
+                </span>
+              )}
+            </div>
+
+            <h3 className="font-heading font-semibold mb-1 leading-tight line-clamp-1" style={{ fontSize: 17, color: 'var(--brand-text)' }}>
+              {space.title}
+            </h3>
+
+            <p className="text-xs" style={{ color: 'var(--brand-muted-foreground)' }}>
+              מתאים ל: עד {space.max_guests} אנשים
+              {useCases.length > 0 && ` · ${useCases.map(a => ACTIVITIES[a]?.label || a).join(', ')}`}
+              {category ? ` (${category.emoji} ${category.label})` : ''}
+            </p>
           </div>
 
-          <h3 className="font-heading font-bold mb-2 leading-tight" style={{ fontSize: 17, color: 'var(--brand-text)' }}>
-            {space.title}
-          </h3>
-
-          {useCases.length > 0 && (
-            <p className="text-xs font-semibold mb-2" style={{ color: 'var(--brand-muted-foreground)' }}>
-              מתאים ל: {useCases.map(a => ACTIVITIES[a]?.label || a).join(' · ')}
-            </p>
+          {startingPrice > 0 && (
+            <div className="mt-3 pt-2 -mx-4 -mb-4 px-4 py-2.5 flex items-center justify-between" style={{ background: 'var(--brand-surface-cream)' }}>
+              <div className="flex items-baseline gap-1">
+                <span className="font-heading font-bold" style={{ fontSize: 18, color: 'var(--brand-primary)' }}>₪{startingPrice}</span>
+                <span className="text-xs" style={{ color: 'var(--brand-muted-foreground)' }}>/ שעה</span>
+              </div>
+              <span className="text-xs font-semibold" style={{ color: 'var(--brand-emerald-vibrant)' }}>פרטים והזמנה</span>
+            </div>
           )}
-
-          <div className="flex items-center gap-3 justify-end">
-            <span className="flex items-center gap-1 text-xs font-semibold" style={{ color: 'var(--brand-muted-foreground)' }}>
-              <Users size={13} /> עד {space.max_guests} אנשים
-            </span>
-            {space.review_count > 0 && (
-              <span className="text-xs font-semibold" style={{ color: 'var(--brand-muted-foreground)' }}>
-                · {space.review_count} ביקורות
-              </span>
-            )}
-          </div>
         </div>
       </article>
     </Link>

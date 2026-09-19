@@ -15,12 +15,12 @@ export default function SiteFooter() {
                 margin: 'var(--brand-sp-6) var(--brand-sp-5)',
                 padding: 'var(--brand-sp-6) var(--brand-sp-5)',
                 borderRadius: 'var(--brand-radius-lg)',
-                background: 'var(--brand-secondary)',
+                background: 'var(--brand-emerald-deep)',
                 color: 'var(--brand-on-primary)',
                 fontFamily: 'var(--brand-font-body)',
               }}>
         <div className="text-right">
-          <span style={{ color: 'var(--brand-accent)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', fontSize: 13 }}>
+          <span style={{ color: 'var(--brand-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', fontSize: 13 }}>
             רוצים להרוויח מהנכס שלכם?
           </span>
           <h2 className="font-heading font-bold mt-2"
@@ -41,7 +41,7 @@ export default function SiteFooter() {
               style={{
                 padding: 'var(--brand-sp-3) var(--brand-sp-5)',
                 borderTop: '1px solid var(--brand-border)',
-                background: 'var(--brand-surface)',
+                background: 'var(--brand-surface-cream)',
                 color: 'var(--brand-muted-foreground)',
                 fontFamily: 'var(--brand-font-body)',
                 fontSize: 14,
